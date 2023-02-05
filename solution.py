@@ -2,22 +2,24 @@ import urllib.request
 import re
 import datetime
 
-urllib.request.urlretrieve('https://s3.amazonaws.com/tcmg476/http_access_log', r"C:\Users\Joe\Documents\PythonStuff\data.txt") #downloads txt from http
-with open (r"C:\Users\Joe\Documents\PythonStuff\data.txt", 'r') as data: #opens txt file
-  data_list = data.readlines() #converts txt to list, each line is an index
+# urllib.request.urlretrieve('https://s3.amazonaws.com/tcmg476/http_access_log', r"C:\Users\Joe\Documents\PythonStuff\data.txt") #downloads txt from http
+with open ( 'http_access_log.txt', 'r') as data: #opens txt file
+
+  data_list = data.read().splitlines() #converts txt to list, each line is an index (read().splitlines() is used to remove the newline character)
   ttl_rq = len(data_list) #counts total indexes to obtain total number of requests
   
   date_list = []
   data_list.reverse() #sorts from most recent to oldest
   no_date_counter = 0
 
-
+  empty_dates = []
   for i in range(ttl_rq): #obtain dates from entire list
     try:
       n = str(data_list[i]) #turns list element into a string to split
       n2 = re.split('\[|\]|\:', n) #splits at brackets and colons so there is only date
       date_list.append(n2[1].split(r'/')) #makes each part of date into an element of its own list, added to master list named date_list
     except IndexError: #used to bypass requests without a date
+      empty_dates.append(data_list[i]) #adds index of request without a date to list
       no_date_counter += 1 #tallies number of requests without a date
       pass
     
@@ -35,9 +37,12 @@ with open (r"C:\Users\Joe\Documents\PythonStuff\data.txt", 'r') as data: #opens 
     else: #stops the for loop once it reaches 6 months to prevent further parsing
       break
     
-print ('the most recent date is', comparison)
-print(" ")
-print ('The most recent entry is:', data_list[0])
+
+# print ('the most recent date is', comparison)
+# print(" ")
+# print ('The most recent entry is:', data_list[0])
+# print(' The oldest entry is:', data_list[-1])
+
 print ('Total number of requests:', ttl_rq)
 print('number of requests within the past 6 months:', counter)
 print('number of requests without a date:', no_date_counter)
