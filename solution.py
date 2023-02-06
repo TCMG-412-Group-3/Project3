@@ -2,8 +2,8 @@ import urllib.request
 import re
 import datetime
 
-# urllib.request.urlretrieve('https://s3.amazonaws.com/tcmg476/http_access_log', r"C:\Users\Joe\Documents\PythonStuff\data.txt") #downloads txt from http
-with open ( 'http_access_log.txt', 'r') as data: #opens txt file
+urllib.request.urlretrieve('https://s3.amazonaws.com/tcmg476/http_access_log', r"./http_access_log.txt") #downloads txt from http
+with open ( './http_access_log.txt', 'r') as data: #opens txt file
 
   data_list = data.read().splitlines() #converts txt to list, each line is an index (read().splitlines() is used to remove the newline character)
   ttl_rq = len(data_list) #counts total indexes to obtain total number of requests
